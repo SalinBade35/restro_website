@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+        
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+
+    <style>
+        .signup-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+
+        .signup-link a {
+            color: #0099ff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .signup-link a:hover {
+            color: #0056b3;
+        }
+
+        /* for alertify */
+        /* Customize success message color */
+        .ajs-message.ajs-success {
+            background-color: #28a745 !important; /* Green color for success */
+            color: white !important;
+        }
+
+        /* Customize error message color */
+        .ajs-message.ajs-error {
+            background-color: #dc3545 !important; /* Red color for error */
+            color: white !important;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+
+        <div class="container">
+            <div class="heading">Sign In</div>
+            <div class="close-button">
+                <a href="{% url 'index' %}">&#10005;</a>
+            </div>
+            <form method='POST' action="{% url 'log_in' %}" class="form">
+                {% csrf_token %}
+                
+                <input required="" class="input" type="text" name="username" id="username" placeholder="Username">
+                <input required="" class="input" type="password" name="password" id="password" placeholder="Password">
+            
+
+                <!-- remember me  check box -->
+                <div>
+                    <input type="checkbox" name="remember_me" >
+                    <label>Remember Me</label>
+                </div>
+
+
+
+
+                <span class="forgot-password"><a href="{% url 'password_reset' %}">Forgot Password ?</a></span>
+                <input class="login-button" type="submit" value="Sign In">
+            </form>
+
+
+
+            <div class="social-account-container">
+                <span class="title">Or Sign in with</span>
+                <div class="social-accounts">
+                    <button class="social-button google" onclick="window.location.href='{% url 'social:begin' 'google-oauth2' %}'">
+                        <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 488 512">
+                            <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
+                        </svg>
+                    </button>
+
+                    <button class="social-button facebook" onclick="window.location.href='{% url 'social:begin' 'facebook' %}'">
+                        <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
+                          <path d="M279.14 288l14.22-92.66h-88.91V142.6c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.17 44.38-121.17 124.72v70.62H22.89V288h81.3v224h100.2V288z" />
+                        </svg>
+                      </button>
+                      
+                    <button class="social-button twitter">
+                        <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                            <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <span class="agreement"><a href="#">Learn user licence agreement</a></span>
+
+            <!-- Sign Up link -->
+            <div class="signup-link">
+                Don't have an account? <a href="{% url 'register' %}">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>  
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            // Set the position of the notifier
+            alertify.set('notifier', 'position', 'bottom-center');
+            
+            // Check the message type and display accordingly
+            {% if message.tags == 'error' %}
+                alertify.error("{{message}}");  // Show error messages in red
+            {% else %}
+                alertify.success("{{message}}"); // Show success messages in green
+            {% endif %}
+        </script>
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>
